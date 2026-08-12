@@ -14,6 +14,8 @@
 - [ ] Anthropic API key + billing configured
 - [ ] Stack decided, repo scaffolded, `.env` + `.gitignore` in place
 
+**Definition of Done:** repo exists with roadmap and board visible; a secret can't accidentally be committed; a new contributor could clone the repo and know what stack to expect.
+
 ---
 
 ## Phase 1 — Discovery & Definition (Days 1-3)
@@ -41,6 +43,8 @@
 
 **Output:** `PRD.md`
 
+**Definition of Done:** the problem statement is backed by ≥15 cited data points from real reviews/discussions, not assumption; the competitive gap is stated in one sentence a stranger could repeat back accurately; non-goals are explicit, not implied.
+
 ---
 
 ## Phase 2 — Agent Design (Days 4-5)
@@ -57,6 +61,8 @@
 
 **Output:** `design/wireframes/`
 
+**Definition of Done:** every score band maps to exactly one named action, with no ambiguous cases left undefined; a reviewer could trace any example account through the rubric by hand and get the same score the system would.
+
 ---
 
 ## Phase 3 — Build (Days 6-10)
@@ -69,6 +75,8 @@
 
 **Output:** working prototype, deployed or runnable locally with clear setup instructions
 
+**Definition of Done:** a stranger can clone the repo, follow the setup instructions with no help, and get the full flow (account list → reasoning → draft → approve) working end to end.
+
 ---
 
 ## Phase 4 — Validate (Days 11-12)
@@ -78,12 +86,16 @@
 
 **Output:** `research/user-feedback.md` — quantified results
 
+**Definition of Done:** at least one success metric from the PRD has a real, cited number attached to it — not an estimate you made up; at least one piece of feedback changed something in the product.
+
 ---
 
 ## Phase 5 — Finalize (Days 13-14)
 
 - **Day 13:** Write final README: problem → approach & key decisions → demo (GIF/video) → results → what's next
 - **Day 14:** Clean up repo structure, add LICENSE, final polish, publish
+
+**Definition of Done:** someone with zero context can read the README top to bottom and understand the problem, the decision, the result, and how to run it — without needing to open any other file.
 
 ---
 
