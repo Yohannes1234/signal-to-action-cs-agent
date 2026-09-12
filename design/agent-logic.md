@@ -57,6 +57,14 @@ When an account is Medium or High risk, the system identifies the **primary driv
 
 If only one signal is elevated, that signal is automatically the primary driver.
 
+**Ties:** if two or more signals are tied at the highest severity, the priority order (Support > Sentiment > Usage > Engagement) breaks the tie — the higher-priority signal wins and becomes the primary driver.
+
+### Primary driver vs. supporting signals
+
+**The primary driver determines the recommended action. All elevated signals — primary and supporting — inform the generated explanation and the drafted outreach.**
+
+This keeps the system deterministic and traceable (one clear rule decides *what to recommend*) while still producing outreach that reads as genuinely aware of the account's full context, not a single-signal template. An engineer or reviewer should always be able to look at the signal table, apply the priority order, and predict which action fires — the language of the explanation and draft is the only part that draws on the supporting signals.
+
 ---
 
 ## 5. Risk → Action Mapping
@@ -75,17 +83,18 @@ If only one signal is elevated, that signal is automatically the primary driver.
 ## 6. Worked Example
 
 **Account: Acme Corp**
-- Usage trend: declined 22% in 30 days → **Medium (1 pt)**
-- Support activity: 1 unresolved ticket, none critical → **Low (0 pt)**
-- NPS/sentiment: NPS 6 → **High (2 pt)**
-- Engagement recency: last interaction 12 days ago → **Low (0 pt)**
+- Usage trend: declined 42% in 30 days → **High (2 pt)**
+- Support activity: 3 unresolved tickets, none critical → **Medium (1 pt)**
+- NPS/sentiment: NPS 5 (detractor) → **High (2 pt)**
+- Engagement recency: last interaction 21 days ago → **Medium (1 pt)**
 
-**Base score:** 1 + 0 + 2 + 0 = 3 → **Medium risk**
-**Escalation override check:** none triggered
-**Primary driver:** Sentiment (the only High signal)
-**Recommended action:** Personal CSM outreach addressing the specific dissatisfaction
+**Base score:** 2 + 1 + 2 + 1 = 6 → **High risk**
+**Escalation override check:** none triggered (no single override condition met)
+**Primary driver:** Usage and Sentiment are tied at High — the priority order (Support > Sentiment > Usage > Engagement) breaks the tie in favor of **Sentiment**
+**Recommended action:** Reach out to understand and address customer dissatisfaction (driven by the Sentiment mapping in Section 5)
+**Explanation/draft generation:** incorporates all elevated signals — sentiment (primary), plus usage decline, unresolved tickets, and reduced engagement (supporting) — producing a message that references the fuller picture, not just the primary driver alone
 
-This example should be traceable by hand — anyone reading this document can recompute the same result the system would produce.
+This example should be traceable by hand — anyone reading this document can recompute the same result the system would produce, including which signal wins the tie-break and why.
 
 ---
 
