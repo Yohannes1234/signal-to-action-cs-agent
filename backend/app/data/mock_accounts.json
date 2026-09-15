@@ -1,0 +1,327 @@
+[
+  {
+    "account_id": "acme-corp",
+    "account_name": "Acme Corp",
+    "industry": "Manufacturing",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": -29.4,
+      "unresolved_tickets": 2,
+      "has_critical_unresolved": false,
+      "nps": 6,
+      "days_since_last_interaction": 13
+    }
+  },
+  {
+    "account_id": "northstar",
+    "account_name": "Northstar",
+    "industry": "Healthcare",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": 3.8,
+      "unresolved_tickets": 0,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 3
+    }
+  },
+  {
+    "account_id": "brightpath",
+    "account_name": "BrightPath",
+    "industry": "Education",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": -16.0,
+      "unresolved_tickets": 3,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 17
+    }
+  },
+  {
+    "account_id": "summit-solutions",
+    "account_name": "Summit Solutions",
+    "industry": "Finance",
+    "employees": "201-500",
+    "signals": {
+      "usage_trend_pct": 16.3,
+      "unresolved_tickets": 0,
+      "has_critical_unresolved": false,
+      "nps": 10,
+      "days_since_last_interaction": 6
+    }
+  },
+  {
+    "account_id": "riverside-health",
+    "account_name": "Riverside Health",
+    "industry": "Education",
+    "employees": "1-50",
+    "signals": {
+      "usage_trend_pct": 18.8,
+      "unresolved_tickets": 1,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 1
+    }
+  },
+  {
+    "account_id": "vertex-inc",
+    "account_name": "Vertex Inc",
+    "industry": "Education",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": 1.6,
+      "unresolved_tickets": 1,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 11
+    }
+  },
+  {
+    "account_id": "beacon-labs",
+    "account_name": "Beacon Labs",
+    "industry": "Manufacturing",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": 17.8,
+      "unresolved_tickets": 0,
+      "has_critical_unresolved": false,
+      "nps": 10,
+      "days_since_last_interaction": 4
+    }
+  },
+  {
+    "account_id": "cobalt-systems",
+    "account_name": "Cobalt Systems",
+    "industry": "Finance",
+    "employees": "1-50",
+    "signals": {
+      "usage_trend_pct": -50.5,
+      "unresolved_tickets": 3,
+      "has_critical_unresolved": false,
+      "nps": 0,
+      "days_since_last_interaction": 32
+    }
+  },
+  {
+    "account_id": "lighthouse-analytics",
+    "account_name": "Lighthouse Analytics",
+    "industry": "Healthcare",
+    "employees": "201-500",
+    "signals": {
+      "usage_trend_pct": -30.3,
+      "unresolved_tickets": 5,
+      "has_critical_unresolved": true,
+      "nps": 5,
+      "days_since_last_interaction": 41
+    }
+  },
+  {
+    "account_id": "pinecrest-group",
+    "account_name": "Pinecrest Group",
+    "industry": "Healthcare",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": 10.8,
+      "unresolved_tickets": 0,
+      "has_critical_unresolved": false,
+      "nps": 10,
+      "days_since_last_interaction": 10
+    }
+  },
+  {
+    "account_id": "meridian-software",
+    "account_name": "Meridian Software",
+    "industry": "Technology",
+    "employees": "51-200",
+    "signals": {
+      "usage_trend_pct": -25.9,
+      "unresolved_tickets": 2,
+      "has_critical_unresolved": false,
+      "nps": 6,
+      "days_since_last_interaction": 20
+    }
+  },
+  {
+    "account_id": "anchor-digital",
+    "account_name": "Anchor Digital",
+    "industry": "Healthcare",
+    "employees": "501-1000",
+    "signals": {
+      "usage_trend_pct": -32.8,
+      "unresolved_tickets": 5,
+      "has_critical_unresolved": true,
+      "nps": 1,
+      "days_since_last_interaction": 38
+    }
+  },
+  {
+    "account_id": "fieldstone-partners",
+    "account_name": "Fieldstone Partners",
+    "industry": "Healthcare",
+    "employees": "51-200",
+    "signals": {
+      "usage_trend_pct": 17.6,
+      "unresolved_tickets": 1,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 4
+    }
+  },
+  {
+    "account_id": "harborview-tech",
+    "account_name": "Harborview Tech",
+    "industry": "Healthcare",
+    "employees": "51-200",
+    "signals": {
+      "usage_trend_pct": -16.5,
+      "unresolved_tickets": 3,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 21
+    }
+  },
+  {
+    "account_id": "ironwood-consulting",
+    "account_name": "Ironwood Consulting",
+    "industry": "Healthcare",
+    "employees": "501-1000",
+    "signals": {
+      "usage_trend_pct": -27.7,
+      "unresolved_tickets": 1,
+      "has_critical_unresolved": false,
+      "nps": 6,
+      "days_since_last_interaction": 30
+    }
+  },
+  {
+    "account_id": "silverline-data",
+    "account_name": "Silverline Data",
+    "industry": "Technology",
+    "employees": "1-50",
+    "signals": {
+      "usage_trend_pct": -20.4,
+      "unresolved_tickets": 3,
+      "has_critical_unresolved": false,
+      "nps": 7,
+      "days_since_last_interaction": 27
+    }
+  },
+  {
+    "account_id": "crestview-logistics",
+    "account_name": "Crestview Logistics",
+    "industry": "Finance",
+    "employees": "501-1000",
+    "signals": {
+      "usage_trend_pct": -16.6,
+      "unresolved_tickets": 2,
+      "has_critical_unresolved": false,
+      "nps": 7,
+      "days_since_last_interaction": 13
+    }
+  },
+  {
+    "account_id": "bluepeak-media",
+    "account_name": "Bluepeak Media",
+    "industry": "Healthcare",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": -7.9,
+      "unresolved_tickets": 1,
+      "has_critical_unresolved": false,
+      "nps": 10,
+      "days_since_last_interaction": 12
+    }
+  },
+  {
+    "account_id": "granite-retail",
+    "account_name": "Granite Retail",
+    "industry": "Healthcare",
+    "employees": "201-500",
+    "signals": {
+      "usage_trend_pct": -30.2,
+      "unresolved_tickets": 4,
+      "has_critical_unresolved": false,
+      "nps": 4,
+      "days_since_last_interaction": 30
+    }
+  },
+  {
+    "account_id": "willowbrook-finance",
+    "account_name": "Willowbrook Finance",
+    "industry": "Education",
+    "employees": "1-50",
+    "signals": {
+      "usage_trend_pct": -43.4,
+      "unresolved_tickets": 6,
+      "has_critical_unresolved": false,
+      "nps": 4,
+      "days_since_last_interaction": 38
+    }
+  },
+  {
+    "account_id": "cedarline-manufacturing",
+    "account_name": "Cedarline Manufacturing",
+    "industry": "Healthcare",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": 2.2,
+      "unresolved_tickets": 1,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 0
+    }
+  },
+  {
+    "account_id": "foxglove-studio",
+    "account_name": "Foxglove Studio",
+    "industry": "Healthcare",
+    "employees": "501-1000",
+    "signals": {
+      "usage_trend_pct": -61.6,
+      "unresolved_tickets": 5,
+      "has_critical_unresolved": false,
+      "nps": 6,
+      "days_since_last_interaction": 26
+    }
+  },
+  {
+    "account_id": "timberline-insurance",
+    "account_name": "Timberline Insurance",
+    "industry": "Retail",
+    "employees": "51-200",
+    "signals": {
+      "usage_trend_pct": -58.4,
+      "unresolved_tickets": 6,
+      "has_critical_unresolved": false,
+      "nps": 3,
+      "days_since_last_interaction": 31
+    }
+  },
+  {
+    "account_id": "amberwood-legal",
+    "account_name": "Amberwood Legal",
+    "industry": "Education",
+    "employees": "1-50",
+    "signals": {
+      "usage_trend_pct": -20.0,
+      "unresolved_tickets": 3,
+      "has_critical_unresolved": false,
+      "nps": 8,
+      "days_since_last_interaction": 26
+    }
+  },
+  {
+    "account_id": "clearwater-education",
+    "account_name": "Clearwater Education",
+    "industry": "Healthcare",
+    "employees": "1000+",
+    "signals": {
+      "usage_trend_pct": -6.2,
+      "unresolved_tickets": 0,
+      "has_critical_unresolved": false,
+      "nps": 10,
+      "days_since_last_interaction": 8
+    }
+  }
+]
