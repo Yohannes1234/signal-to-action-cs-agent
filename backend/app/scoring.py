@@ -51,6 +51,28 @@ def score_engagement_recency(days_since_last_interaction: int) -> str:
         return "high"
 
 
+def calculate_base_score(signal_levels: dict) -> int:
+    """
+    Takes a dict of signal_name -> risk_level ('low'/'medium'/'high')
+    and returns the total base score (0-8).
+    """
+    points_map = {"low": 0, "medium": 1, "high": 2}
+    return sum(points_map[level] for level in signal_levels.values())
+
+
+def score_to_risk_band(base_score: int) -> str:
+    """
+    Converts the total base score (0-8) into a risk band.
+    Rules: 0-2 -> low, 3-5 -> medium, 6-8 -> high.
+    """
+    if base_score <= 2:
+        return "low"
+    elif base_score <= 5:
+        return "medium"
+    else:
+        return "high"
+
+
 if __name__ == "__main__":
     print(score_usage_trend(-42))
     print(score_support_activity(3))
