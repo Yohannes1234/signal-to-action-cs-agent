@@ -84,9 +84,68 @@ def check_escalation_override(account_signals: dict) -> bool:
 
     return critical_ticket or severe_usage_decline or hard_detractor
 
+def determine_primary_driver(signal_levels: dict) -> str:
+    """
+    Determines which signal is the primary driver of risk, using the
+    priority order Support > Sentiment > Usage > Engagement to break
+    ties among signals at the same (highest) severity.
+    Rules from agent-logic.md section 4.
+    """
+    priority_order = ["support_activity", "nps", "usage_trend", "engagement_recency"]
+    severity_rank = {"low": 0, "medium": 1, "high": 2}
+
+    highest_severity = max(severity_rank[level] for level in signal_levels.values())
+
+    for signal_name in priority_order:
+        if severity_rank[signal_levels[signal_name]] == highest_severity:
+            return signal_name
+
+
+def score_account(account_signals: dict) -> dict:
+    """
+    Takes an account's raw signals and returns the complete risk
+    assessment: individual signal levels, base score, risk band,
+    whether an override fired, and the primary driver.
+    """
+    signal_levels = {
+        "usage_trend": score_usage_trend(account_signals["usage_trend_pct"]),
+        "support_activity": score_support_activity(
+            account_signals["unresolved_tickets"],
+            account_signals["has_critical_unresolved"],
+        ),
+        "nps": score_nps(account_signals["nps"]),
+        "engagement_recency": score_engagement_recency(
+            account_signals["days_since_last_interaction"]
+        ),
+    }
+
+    base_score = calculate_base_score(signal_levels)
+    override_fired = check_escalation_override(account_signals)
+
+    if override_fired:
+        risk_band = "high"
+    else:
+        risk_band = score_to_risk_band(base_score)
+
+    primary_driver = determine_primary_driver(signal_levels)
+
+    return {
+        "signal_levels": signal_levels,
+        "base_score": base_score,
+        "override_fired": override_fired,
+        "risk_band": risk_band,
+        "primary_driver": primary_driver,
+    }
+
+
 
 if __name__ == "__main__":
-    print(score_usage_trend(-42))
-    print(score_support_activity(3))
-    print(score_nps(5))
-    print(score_engagement_recency(21))
+    acme_signals = {
+        "usage_trend_pct": -42,
+        "unresolved_tickets": 3,
+        "has_critical_unresolved": False,
+        "nps": 5,
+        "days_since_last_interaction": 21,
+    }
+    result = score_account(acme_signals)
+    print(result)
