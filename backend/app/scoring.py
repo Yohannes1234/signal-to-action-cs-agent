@@ -72,6 +72,18 @@ def score_to_risk_band(base_score: int) -> str:
     else:
         return "high"
 
+def check_escalation_override(account_signals: dict) -> bool:
+    """
+    Returns True if any escalation override condition is met,
+    forcing the account to High risk regardless of base score.
+    Rules from agent-logic.md section 3.
+    """
+    critical_ticket = account_signals["has_critical_unresolved"]
+    severe_usage_decline = account_signals["usage_trend_pct"] < -50
+    hard_detractor = account_signals["nps"] <= 3
+
+    return critical_ticket or severe_usage_decline or hard_detractor
+
 
 if __name__ == "__main__":
     print(score_usage_trend(-42))
