@@ -100,6 +100,22 @@ def determine_primary_driver(signal_levels: dict) -> str:
         if severity_rank[signal_levels[signal_name]] == highest_severity:
             return signal_name
 
+def map_driver_to_action(primary_driver: str, risk_band: str) -> str:
+    """
+    Maps the primary driver to a recommended action.
+    Rules from agent-logic.md section 5.
+    """
+    if risk_band == "low":
+        return "No action; routine monitoring"
+
+    action_map = {
+        "support_activity": "Escalate internally; CSM outreach offering direct resolution",
+        "nps": "Personal CSM outreach addressing the specific dissatisfaction",
+        "usage_trend": "Schedule a business review or re-engagement call; investigate adoption barriers",
+        "engagement_recency": "Lightweight check-in email",
+    }
+    return action_map[primary_driver]
+
 
 def score_account(account_signals: dict) -> dict:
     """
