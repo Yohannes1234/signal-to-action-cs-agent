@@ -32,6 +32,7 @@ function AccountDetail() {
   if (error) return <p>Error: {error}</p>;
 
   const { signals, signal_levels } = account;
+  const isLow = account.risk_band === "low";
 
   return (
     <div>
@@ -67,7 +68,10 @@ function AccountDetail() {
           </tr>
           <tr>
             <td>Support activity</td>
-            <td>{signals.unresolved_tickets} unresolved tickets</td>
+            <td>
+              {signals.unresolved_tickets} unresolved{" "}
+              {signals.unresolved_tickets === 1 ? "ticket" : "tickets"}
+            </td>
             <td>{signal_levels.support_activity}</td>
           </tr>
           <tr>
@@ -83,10 +87,14 @@ function AccountDetail() {
         </tbody>
       </table>
 
-      <h2>Why this account is at risk</h2>
+      <h2>{isLow ? "Account summary" : "Why this account is at risk"}</h2>
       {!draft && (
         <button onClick={handleGenerate} disabled={draftLoading}>
-          {draftLoading ? "Generating..." : "Explain risk & recommend action"}
+          {draftLoading
+            ? "Generating..."
+            : isLow
+            ? "Summarize account"
+            : "Explain risk & recommend action"}
         </button>
       )}
       {draftError && <p>Error: {draftError}</p>}
