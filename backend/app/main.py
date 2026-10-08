@@ -69,9 +69,8 @@ def get_draft(account_id: str):
     action = map_driver_to_action(scored["primary_driver"], scored["risk_band"])
     output = generate_explanation_and_draft(
         account["account_name"], account["signals"], scored["signal_levels"],
-        scored["primary_driver"], action
+        scored["primary_driver"], action, scored["risk_band"]
     )
-
     return {
         "recommended_action": action,
         "explanation": output["explanation"],

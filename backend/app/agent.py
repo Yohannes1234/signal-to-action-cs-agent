@@ -6,39 +6,53 @@ load_dotenv()
 client = Anthropic()  # automatically reads ANTHROPIC_API_KEY from the environment
 
 
-
 def generate_explanation_and_draft(account_name: str, signals: dict, signal_levels: dict,
-                                     primary_driver: str, recommended_action: str) -> dict:
+                                     primary_driver: str, recommended_action: str,
+                                     risk_band: str) -> dict:
     """
     Calls Claude to generate a plain-language risk explanation and a
     personalized outreach draft, based on the deterministic scoring
     and action-mapping results (never on its own judgment of risk).
     """
 
-    prompt = f"""You are helping a Customer Success Manager understand why an account is at risk and prepare outreach.
+    prompt = f"""You are helping a Customer Success Manager understand an account's health and prepare outreach.
+
+IMPORTANT: The risk assessment below was computed by a deterministic scoring system. Do not re-judge it, contradict it, or invent causes that are not in the data. Only explain and phrase what the data shows.
+
+How to read the data:
+- Each signal level (low/medium/high) is a RISK level, not a quality level. "low" means little risk (healthy); "high" means high risk.
+- NPS is on a 0-10 scale: 9-10 is a promoter (very satisfied), 7-8 is passive, 0-6 is a detractor (dissatisfied).
+- Usage trend is the % change over 30 days; a negative number is a decline.
 
 Account: {account_name}
+Overall risk band: {risk_band}
 Signals:
-- Usage trend: {signals['usage_trend_pct']}% change in 30 days ({signal_levels['usage_trend']})
-- Support activity: {signals['unresolved_tickets']} unresolved tickets, critical unresolved: {signals['has_critical_unresolved']} ({signal_levels['support_activity']})
-- NPS: {signals['nps']} ({signal_levels['nps']})
-- Engagement: {signals['days_since_last_interaction']} days since last interaction ({signal_levels['engagement_recency']})
+- Usage trend: {signals['usage_trend_pct']}% change in 30 days (risk level: {signal_levels['usage_trend']})
+- Support activity: {signals['unresolved_tickets']} unresolved tickets, critical unresolved: {signals['has_critical_unresolved']} (risk level: {signal_levels['support_activity']})
+- NPS: {signals['nps']} (risk level: {signal_levels['nps']})
+- Engagement: {signals['days_since_last_interaction']} days since last interaction (risk level: {signal_levels['engagement_recency']})
 
-The primary driver of risk is: {primary_driver}
-The recommended action is: {recommended_action}
+Primary driver: {primary_driver}
+Recommended action: {recommended_action}
 
-Respond with ONLY valid JSON, no markdown formatting, no code fences, no other text — just the raw JSON object, in this exact format:
+Rules:
+- If the overall risk band is "low", say the account looks healthy. Do not describe risk or concerns, and do not treat the primary driver as a problem. Write a short, positive check-in email (not a rescue email).
+- If the band is "medium" or "high", lead with the primary driver, then use supporting signals for context. Only mention a signal as a concern if its risk level is medium or high.
+- Never describe a signal in a way that contradicts its value or risk level.
+- Never invent facts (history, causes, events) that are not in the data above.
+
+Respond with ONLY valid JSON, no markdown formatting, no code fences, no other text, in this exact format:
 {{
-  "explanation": "2-3 sentence plain-language explanation of why this account is at risk, referencing the primary driver first and supporting signals second",
+  "explanation": "2-3 sentence plain-language summary of the account's situation, consistent with the risk band",
   "draft_email": {{
     "subject": "short email subject line",
-    "body": "email body text, addressing the primary driver and naturally referencing supporting signals"
+    "body": "email body text appropriate to the risk band"
   }}
 }}"""
-
+    
     response = client.messages.create(
         model="claude-sonnet-4-6",
-        max_tokens=500,
+        max_tokens=1000,
         messages=[{"role": "user", "content": prompt}],
     )
 
@@ -70,7 +84,7 @@ if __name__ == "__main__":
 
     output = generate_explanation_and_draft(
         "Acme Corp", acme_signals, result["signal_levels"],
-        result["primary_driver"], action
+        result["primary_driver"], action, result["risk_band"]
     )
     print(output["explanation"])
     print("---")
