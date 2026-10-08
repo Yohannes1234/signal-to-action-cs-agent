@@ -10,12 +10,14 @@ Four signals are evaluated per account. Each is scored independently as Low / Me
 
 | Signal | Low Risk | Medium Risk | High Risk |
 |---|---|---|---|
-| **Usage trend** | Stable/growing, or decline <10% in 30 days | Decline of 10-30% | Decline >30% |
-| **Support activity** | 0-1 unresolved tickets | 2-3 unresolved tickets, or rising ticket volume | 4+ unresolved tickets, or a critical issue unresolved >7 days |
-| **NPS / sentiment** | NPS 9-10, or clearly positive sentiment | NPS 7-8, or neutral/mixed sentiment | NPS 0-6, or clearly negative sentiment |
+| **Usage trend** | Stable/growing, or decline <10% in 30 days | Decline of 10% to <30% | Decline of 30% or more |
+| **Support activity** | 0-1 unresolved tickets | 2-3 unresolved tickets | 4+ unresolved tickets, or a critical issue unresolved >7 days |
+| **NPS / sentiment** | NPS 9-10 | NPS 7-8 | NPS 0-6 |
 | **Engagement recency** | Meaningful interaction within 14 days | 15-30 days since last interaction | >30 days since last interaction |
 
 **Design note:** ticket volume alone is not treated as risky — only unresolved and high-severity issues carry weight, since normal support activity is expected and not itself a churn signal.
+
+**v1 implementation note:** v1 scores on numeric thresholds only. Qualitative conditions (rising ticket volume trends, and positive/negative sentiment inferred from free-text feedback) would require real support and feedback data, which the mocked v1 data does not include. They are future enhancements, not current behavior.
 
 ---
 
@@ -41,9 +43,13 @@ An account is automatically classified **High risk** if any of the following are
 
 - A critical/high-severity support ticket has been unresolved for more than 7 days
 - Usage has declined more than 50% in 30 days
-- NPS is 0-3 **and** recent feedback contains explicit dissatisfaction or churn-related language
+- NPS is 0-3
 
 **Design rationale:** this makes the "not all signals are equal" judgment explicit and auditable, rather than hidden inside a weighting formula that would be harder to explain and defend (e.g. "why is support weighted 2.3x?"). A CSM or reviewer can see exactly which override fired and why.
+
+**v1 implementation notes:**
+- The critical-ticket condition is read from a `has_critical_unresolved` flag in the mocked account data, which represents "a critical ticket unresolved for more than 7 days." v1 does not track ticket ages itself.
+- A fuller version of the NPS override would also require explicit dissatisfaction or churn-related language in recent feedback. v1 has no feedback text, so the override fires on NPS 0-3 alone. Adding the feedback-language condition is a future enhancement.
 
 ---
 
@@ -59,6 +65,8 @@ If only one signal is elevated, that signal is automatically the primary driver.
 
 **Ties:** if two or more signals are tied at the highest severity, the priority order (Support > Sentiment > Usage > Engagement) breaks the tie — the higher-priority signal wins and becomes the primary driver.
 
+**No primary driver for Low risk:** a primary driver is only assigned when the risk band is Medium or High (including accounts forced to High by an escalation override). Low-risk accounts have no primary driver ("none") and receive the action "No action; routine monitoring." This avoids presenting a driver as the cause of risk when no meaningful risk exists. *(Found in testing: a healthy account scoring 1/8 was still labeled with a primary driver. See NOTES.md.)*
+
 ### Primary driver vs. supporting signals
 
 **The primary driver determines the recommended action. All elevated signals — primary and supporting — inform the generated explanation and the drafted outreach.**
@@ -72,11 +80,10 @@ This keeps the system deterministic and traceable (one clear rule decides *what 
 | Primary Driver | Recommended Action |
 |---|---|
 | Support (critical/unresolved) | Escalate internally; CSM outreach offering direct resolution |
-| Sentiment (negative NPS/feedback) | Personal CSM outreach addressing the specific dissatisfaction |
+| Sentiment (negative NPS) | Personal CSM outreach addressing the specific dissatisfaction |
 | Usage (declining) | Schedule a business review or re-engagement call; investigate adoption barriers |
 | Engagement (silence only) | Lightweight check-in email |
-| Medium risk, no dominant driver | Proactive check-in; continue monitoring |
-| Low risk | No action; routine monitoring |
+| None (Low risk) | No action; routine monitoring |
 
 ---
 

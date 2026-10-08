@@ -48,7 +48,10 @@ function AccountDetail() {
         {account.override_fired && " — escalation override applied"}
       </p>
       <p>
-        <strong>Primary driver:</strong> {account.primary_driver}
+        <strong>Primary driver:</strong>{" "}
+        {account.primary_driver === "none"
+          ? "None (no elevated risk)"
+          : account.primary_driver}
       </p>
 
       <h2>Signals</h2>

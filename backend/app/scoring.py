@@ -72,6 +72,7 @@ def score_to_risk_band(base_score: int) -> str:
     else:
         return "high"
 
+
 def check_escalation_override(account_signals: dict) -> bool:
     """
     Returns True if any escalation override condition is met,
@@ -83,6 +84,7 @@ def check_escalation_override(account_signals: dict) -> bool:
     hard_detractor = account_signals["nps"] <= 3
 
     return critical_ticket or severe_usage_decline or hard_detractor
+
 
 def determine_primary_driver(signal_levels: dict) -> str:
     """
@@ -99,6 +101,7 @@ def determine_primary_driver(signal_levels: dict) -> str:
     for signal_name in priority_order:
         if severity_rank[signal_levels[signal_name]] == highest_severity:
             return signal_name
+
 
 def map_driver_to_action(primary_driver: str, risk_band: str) -> str:
     """
@@ -143,7 +146,12 @@ def score_account(account_signals: dict) -> dict:
     else:
         risk_band = score_to_risk_band(base_score)
 
-    primary_driver = determine_primary_driver(signal_levels)
+    # A primary driver only exists when the account is actually at risk
+    # (medium/high band; an override already forces the band to high).
+    if risk_band == "low":
+        primary_driver = "none"
+    else:
+        primary_driver = determine_primary_driver(signal_levels)
 
     return {
         "signal_levels": signal_levels,
@@ -152,7 +160,6 @@ def score_account(account_signals: dict) -> dict:
         "risk_band": risk_band,
         "primary_driver": primary_driver,
     }
-
 
 
 if __name__ == "__main__":
