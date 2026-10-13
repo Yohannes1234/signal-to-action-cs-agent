@@ -19,3 +19,13 @@ export async function fetchDraft(accountId) {
   if (!response.ok) throw new Error("Failed to fetch draft");
   return response.json();
 }
+
+export async function logDecision(accountId, payload) {
+  const response = await fetch(`${API_BASE}/accounts/${accountId}/decision`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error("Failed to log decision");
+  return response.json();
+}

@@ -107,6 +107,13 @@ function AccountDetail() {
           <p>
             <strong>Recommended action:</strong> {draft.recommended_action}
           </p>
+          {!isLow && (
+            <p>
+              <Link to={`/accounts/${accountId}/review`}>
+                Review draft outreach &rarr;
+              </Link>
+            </p>
+          )}
         </div>
       )}
     </div>

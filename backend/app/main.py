@@ -1,6 +1,10 @@
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-import json
+from pydantic import BaseModel
 
 from app.scoring import score_account, map_driver_to_action
 from app.agent import generate_explanation_and_draft
@@ -76,3 +80,31 @@ def get_draft(account_id: str):
         "explanation": output["explanation"],
         "draft_email": output["draft_email"],
     }
+
+
+class DecisionIn(BaseModel):
+    decision: str   # "approved" or "rejected"
+    edited: bool    # did the CSM change the draft before deciding?
+    subject: str
+    body: str
+
+
+@app.post("/accounts/{account_id}/decision")
+def log_decision(account_id: str, payload: DecisionIn):
+    """Records the CSM's approve/reject decision. Nothing is ever sent."""
+    if payload.decision not in ("approved", "rejected"):
+        raise HTTPException(status_code=400, detail="decision must be 'approved' or 'rejected'")
+
+    record = {
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "account_id": account_id,
+        "decision": payload.decision,
+        "edited": payload.edited,
+        "subject": payload.subject,
+        "body": payload.body,
+    }
+    log_path = Path(__file__).parent / "data" / "decisions.jsonl"
+    with open(log_path, "a", encoding="utf-8") as f:
+        f.write(json.dumps(record) + "\n")
+
+    return {"status": "logged"}
