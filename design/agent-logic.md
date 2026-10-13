@@ -109,4 +109,5 @@ This example should be traceable by hand — anyone reading this document can re
 
 - Scoring is rule-based and fixed, not learned or adjusted by machine learning (Non-Goal 2)
 - Signals use mocked data, not live integrations (Non-Goal 3)
-- This logic scores individual accounts only; it does not rank a CSM's full portfolio (Non-Goal 4)
+- This logic scores individual accounts only; it does not rank a CSM's full portfolio (Non-Goal 4)`
+
