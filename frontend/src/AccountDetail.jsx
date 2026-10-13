@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { fetchAccountDetail, fetchDraft } from "./api";
+import { driverLabel } from "./labels";
 
 function AccountDetail() {
   const { accountId } = useParams();
@@ -38,21 +39,23 @@ function AccountDetail() {
     <div>
       <Link to="/">&larr; Back to accounts</Link>
       <h1>{account.account_name}</h1>
-      <p>
+      <p className="meta">
         {account.industry} · {account.employees} employees
       </p>
 
-      <p>
-        <strong>Risk band:</strong> {account.risk_band} (score{" "}
-        {account.base_score}/8)
-        {account.override_fired && " — escalation override applied"}
-      </p>
-      <p>
-        <strong>Primary driver:</strong>{" "}
-        {account.primary_driver === "none"
-          ? "None (no elevated risk)"
-          : account.primary_driver}
-      </p>
+      <div className="card">
+        <p>
+          <strong>Risk band:</strong>{" "}
+          <span className={`badge badge-${account.risk_band}`}>
+            {account.risk_band}
+          </span>{" "}
+          (score {account.base_score}/8)
+          {account.override_fired && " — escalation override applied"}
+        </p>
+        <p>
+          <strong>Primary driver:</strong> {driverLabel(account.primary_driver)}
+        </p>
+      </div>
 
       <h2>Signals</h2>
       <table>
@@ -60,14 +63,18 @@ function AccountDetail() {
           <tr>
             <th>Signal</th>
             <th>Value</th>
-            <th>Level</th>
+            <th>Risk level</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Usage trend</td>
             <td>{signals.usage_trend_pct}%</td>
-            <td>{signal_levels.usage_trend}</td>
+            <td>
+              <span className={`badge badge-${signal_levels.usage_trend}`}>
+                {signal_levels.usage_trend}
+              </span>
+            </td>
           </tr>
           <tr>
             <td>Support activity</td>
@@ -75,17 +82,31 @@ function AccountDetail() {
               {signals.unresolved_tickets} unresolved{" "}
               {signals.unresolved_tickets === 1 ? "ticket" : "tickets"}
             </td>
-            <td>{signal_levels.support_activity}</td>
+            <td>
+              <span className={`badge badge-${signal_levels.support_activity}`}>
+                {signal_levels.support_activity}
+              </span>
+            </td>
           </tr>
           <tr>
             <td>NPS</td>
             <td>{signals.nps}</td>
-            <td>{signal_levels.nps}</td>
+            <td>
+              <span className={`badge badge-${signal_levels.nps}`}>
+                {signal_levels.nps}
+              </span>
+            </td>
           </tr>
           <tr>
             <td>Engagement recency</td>
             <td>{signals.days_since_last_interaction} days since last contact</td>
-            <td>{signal_levels.engagement_recency}</td>
+            <td>
+              <span
+                className={`badge badge-${signal_levels.engagement_recency}`}
+              >
+                {signal_levels.engagement_recency}
+              </span>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -103,7 +124,9 @@ function AccountDetail() {
       {draftError && <p>Error: {draftError}</p>}
       {draft && (
         <div>
-          <p>{draft.explanation}</p>
+          <div className="card">
+            <p>{draft.explanation}</p>
+          </div>
           <p>
             <strong>Recommended action:</strong> {draft.recommended_action}
           </p>

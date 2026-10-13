@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchAccounts } from "./api";
+import { driverLabel } from "./labels";
 
 function AccountList() {
   const [accounts, setAccounts] = useState([]);
@@ -20,12 +21,14 @@ function AccountList() {
   return (
     <div>
       <h1>Accounts</h1>
+      <p className="meta">Click an account to see why it is flagged.</p>
       <table>
         <thead>
           <tr>
             <th>Account</th>
+            <th>Industry</th>
             <th>Risk</th>
-            <th>Primary Driver</th>
+            <th>Primary driver</th>
           </tr>
         </thead>
         <tbody>
@@ -36,8 +39,13 @@ function AccountList() {
                   {acc.account_name}
                 </Link>
               </td>
-              <td>{acc.risk_band}</td>
-              <td>{acc.primary_driver}</td>
+              <td>{acc.industry}</td>
+              <td>
+                <span className={`badge badge-${acc.risk_band}`}>
+                  {acc.risk_band}
+                </span>
+              </td>
+              <td>{driverLabel(acc.primary_driver)}</td>
             </tr>
           ))}
         </tbody>

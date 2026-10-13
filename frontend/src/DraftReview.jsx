@@ -47,18 +47,20 @@ function DraftReview() {
     return (
       <div>
         <h1>{decision === "approved" ? "Draft approved" : "Draft rejected"}</h1>
-        {decision === "approved" ? (
-          <p>
-            Your decision for {account.account_name} has been recorded
-            {edited ? " (with your edits)" : ""}. Nothing was sent. In this
-            prototype, approval does not email anyone.
-          </p>
-        ) : (
-          <p>
-            The draft for {account.account_name} was rejected and nothing was
-            sent.
-          </p>
-        )}
+        <div className="card">
+          {decision === "approved" ? (
+            <p>
+              Your decision for {account.account_name} has been recorded
+              {edited ? " (with your edits)" : ""}. Nothing was sent. In this
+              prototype, approval does not email anyone.
+            </p>
+          ) : (
+            <p>
+              The draft for {account.account_name} was rejected and nothing was
+              sent.
+            </p>
+          )}
+        </div>
         <Link to="/">&larr; Back to accounts</Link>
       </div>
     );
@@ -72,44 +74,42 @@ function DraftReview() {
         <strong>Recommended action:</strong> {draft.recommended_action}
       </p>
 
-      <p>
-        <em>Nothing will be sent without your approval.</em>
-      </p>
+      <div className="notice">Nothing will be sent without your approval.</div>
 
-      <div>
+      <div className="card">
         <label>
           <strong>Subject</strong>
-          <br />
           <input
             type="text"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            style={{ width: "100%" }}
           />
         </label>
+
+        <div style={{ marginTop: "16px" }}>
+          <label>
+            <strong>Body</strong>
+            <textarea
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              rows={16}
+            />
+          </label>
+        </div>
       </div>
 
-      <div style={{ marginTop: "12px" }}>
-        <label>
-          <strong>Body</strong>
-          <br />
-          <textarea
-            value={body}
-            onChange={(e) => setBody(e.target.value)}
-            rows={16}
-            style={{ width: "100%" }}
-          />
-        </label>
-      </div>
-
-      {edited && <p>You have edited this draft.</p>}
+      {edited && <p className="meta">You have edited this draft.</p>}
       {error && <p>Error: {error}</p>}
 
-      <div style={{ marginTop: "12px" }}>
+      <div className="actions">
         <button onClick={() => handleDecision("approved")} disabled={saving}>
           Approve
-        </button>{" "}
-        <button onClick={() => handleDecision("rejected")} disabled={saving}>
+        </button>
+        <button
+          className="btn-secondary"
+          onClick={() => handleDecision("rejected")}
+          disabled={saving}
+        >
           Reject
         </button>
       </div>
