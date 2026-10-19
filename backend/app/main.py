@@ -71,14 +71,30 @@ def get_draft(account_id: str):
 
     scored = score_account(account["signals"])
     action = map_driver_to_action(scored["primary_driver"], scored["risk_band"])
-    output = generate_explanation_and_draft(
-        account["account_name"], account["signals"], scored["signal_levels"],
-        scored["primary_driver"], action, scored["risk_band"]
-    )
+
+    try:
+        output = generate_explanation_and_draft(
+            account["account_name"], account["signals"], scored["signal_levels"],
+            scored["primary_driver"], action, scored["risk_band"]
+        )
+        # Make sure the response has the shape the frontend expects
+        explanation = output["explanation"]
+        draft_email = {
+            "subject": output["draft_email"]["subject"],
+            "body": output["draft_email"]["body"],
+        }
+    except Exception as e:
+        # Log the real cause in the uvicorn terminal for debugging
+        print(f"Draft generation failed for {account_id}: {e!r}")
+        raise HTTPException(
+            status_code=502,
+            detail="The AI draft could not be generated right now. Please try again.",
+        )
+
     return {
         "recommended_action": action,
-        "explanation": output["explanation"],
-        "draft_email": output["draft_email"],
+        "explanation": explanation,
+        "draft_email": draft_email,
     }
 
 

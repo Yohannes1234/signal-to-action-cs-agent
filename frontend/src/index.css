@@ -188,3 +188,12 @@ textarea:focus {
 .btn-secondary:hover:not(:disabled) {
   background: #f3f4f6;
 }
+
+.error {
+  background: var(--high-bg);
+  border: 1px solid #f5c2bb;
+  color: var(--high);
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin: 12px 0;
+}

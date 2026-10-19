@@ -12,10 +12,13 @@ function DraftReview() {
   const [originalBody, setOriginalBody] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [attempt, setAttempt] = useState(0);
   const [decision, setDecision] = useState(null); // null | "approved" | "rejected"
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     Promise.all([fetchAccountDetail(accountId), fetchDraft(accountId)])
       .then(([acct, d]) => {
         setAccount(acct);
@@ -27,7 +30,7 @@ function DraftReview() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [accountId]);
+  }, [accountId, attempt]);
 
   const edited = subject !== originalSubject || body !== originalBody;
 
@@ -41,7 +44,16 @@ function DraftReview() {
   }
 
   if (loading) return <p>Generating draft...</p>;
-  if (error && !draft) return <p>Error: {error}</p>;
+
+  if (!draft) {
+    return (
+      <div>
+        <Link to={`/accounts/${accountId}`}>&larr; Back to account</Link>
+        <div className="error">{error}</div>
+        <button onClick={() => setAttempt((a) => a + 1)}>Try again</button>
+      </div>
+    );
+  }
 
   if (decision) {
     return (
@@ -99,7 +111,7 @@ function DraftReview() {
       </div>
 
       {edited && <p className="meta">You have edited this draft.</p>}
-      {error && <p>Error: {error}</p>}
+      {error && <div className="error">{error}</div>}
 
       <div className="actions">
         <button onClick={() => handleDecision("approved")} disabled={saving}>

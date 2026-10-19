@@ -8,17 +8,20 @@ function AccountDetail() {
   const [account, setAccount] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [attempt, setAttempt] = useState(0);
 
   const [draft, setDraft] = useState(null);
   const [draftLoading, setDraftLoading] = useState(false);
   const [draftError, setDraftError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     fetchAccountDetail(accountId)
       .then(setAccount)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [accountId]);
+  }, [accountId, attempt]);
 
   function handleGenerate() {
     setDraftLoading(true);
@@ -30,7 +33,15 @@ function AccountDetail() {
   }
 
   if (loading) return <p>Loading account...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) {
+    return (
+      <div>
+        <Link to="/">&larr; Back to accounts</Link>
+        <div className="error">{error}</div>
+        <button onClick={() => setAttempt((a) => a + 1)}>Try again</button>
+      </div>
+    );
+  }
 
   const { signals, signal_levels } = account;
   const isLow = account.risk_band === "low";
@@ -112,16 +123,18 @@ function AccountDetail() {
       </table>
 
       <h2>{isLow ? "Account summary" : "Why this account is at risk"}</h2>
+      {draftError && <div className="error">{draftError}</div>}
       {!draft && (
         <button onClick={handleGenerate} disabled={draftLoading}>
           {draftLoading
             ? "Generating..."
+            : draftError
+            ? "Try again"
             : isLow
             ? "Summarize account"
             : "Explain risk & recommend action"}
         </button>
       )}
-      {draftError && <p>Error: {draftError}</p>}
       {draft && (
         <div>
           <div className="card">
